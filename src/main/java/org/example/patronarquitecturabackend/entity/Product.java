@@ -27,22 +27,15 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @NotBlank(message = "The category is required")
     @NotNull(message = "The category is required")
-    private Category categoryId;
+    private Category category;
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
-    @NotBlank(message = "The brand is required")
     @NotNull(message = "The brand is required")
-    private Brand brandId;
-
-    @NotBlank(message = "The model is required")
-    @NotNull(message = "The model is required")
-    private String model;
+    private Brand brand;
 
     @NotNull(message = "The price is required")
-    @NotBlank(message = "The price is required")
     private Double price;
 
     @NotNull(message = "The description is required")

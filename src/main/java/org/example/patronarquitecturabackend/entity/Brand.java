@@ -25,7 +25,7 @@ public class Brand {
         @NotBlank(message = "The name is required")
         private String name;
 
-        @OneToMany(mappedBy = "brandId", cascade = CascadeType.ALL)
+        @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
         @JsonBackReference
         private List<Product> products;
 }
