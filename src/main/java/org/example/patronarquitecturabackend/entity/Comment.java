@@ -24,14 +24,12 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @NotBlank(message = "The user is required")
     @NotNull(message = "The user is required")
-    private User userId;
+    private User user;
 
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    @NotBlank(message = "The product is required")
     @NotNull(message = "The product is required")
-    private Product productId;
+    private Product product;
 }

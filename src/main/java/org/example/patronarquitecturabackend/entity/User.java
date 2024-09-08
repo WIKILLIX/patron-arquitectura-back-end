@@ -23,10 +23,12 @@ public class User {
     @NotNull(message = "The name is required")
     @NotBlank(message = "The name is required")
     private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
     private String password;
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Comment> comments;
 }

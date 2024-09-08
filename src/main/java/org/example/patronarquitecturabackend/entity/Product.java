@@ -25,6 +25,10 @@ public class Product {
     @NotBlank(message = "The name is required")
     private String name;
 
+    @NotNull(message = "The name is required")
+    @NotBlank(message = "The name is required")
+    private String img;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     @NotNull(message = "The category is required")
@@ -42,7 +46,7 @@ public class Product {
     @NotBlank(message = "The description is required")
     private String description;
 
-    @OneToMany(mappedBy = "productId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Comment> comments;
 

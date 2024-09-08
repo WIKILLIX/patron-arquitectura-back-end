@@ -23,6 +23,12 @@ public class ProductRestController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
+    @GetMapping("/name={name}")
+    public ResponseEntity<List<Product>> getProductByName(@PathVariable String name) {
+        List<Product> products = productService.getProductByName(name);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
     @GetMapping("/{productId}")
     public ResponseEntity<Product> getProductById(@PathVariable("productId") Long productId) {
         Product product = productService.getProductById(productId).orElse(null);
