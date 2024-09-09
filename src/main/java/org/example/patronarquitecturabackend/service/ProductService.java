@@ -1,5 +1,6 @@
 package org.example.patronarquitecturabackend.service;
 
+import org.example.patronarquitecturabackend.entity.Brand;
 import org.example.patronarquitecturabackend.entity.Category;
 import org.example.patronarquitecturabackend.entity.Product;
 
@@ -13,7 +14,7 @@ public interface ProductService {
 
     List<Product> getProductByName(String name);
 
-    List<Product> getProductByCategory(Category category);
+    List<Product> getProductByBrand(Brand brand);
 
     List<Product> findByPriceBetween(double min, double max);
 

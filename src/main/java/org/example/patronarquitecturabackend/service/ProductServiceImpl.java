@@ -1,6 +1,7 @@
 package org.example.patronarquitecturabackend.service;
 
 import lombok.AllArgsConstructor;
+import org.example.patronarquitecturabackend.entity.Brand;
 import org.example.patronarquitecturabackend.entity.Category;
 import org.example.patronarquitecturabackend.entity.Product;
 import org.example.patronarquitecturabackend.repository.ProductRepository;
@@ -44,12 +45,12 @@ public class ProductServiceImpl implements ProductService{
     }
 
     /**
-     * @param category
+     * @param brand
      * @return
      */
     @Override
-    public List<Product> getProductByCategory(Category category) {
-        return List.of();
+    public List<Product> getProductByBrand(Brand brand) {
+        return productRepository.findByBrand(brand);
     }
 
     /**

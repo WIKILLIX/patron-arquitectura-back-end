@@ -25,7 +25,7 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @NotNull(message = "The user is required")
-    private User user;
+    private UserEntity user;
 
 
     @ManyToOne

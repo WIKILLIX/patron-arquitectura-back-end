@@ -25,8 +25,6 @@ public class Product {
     @NotBlank(message = "The name is required")
     private String name;
 
-    @NotNull(message = "The name is required")
-    @NotBlank(message = "The name is required")
     private String img;
 
     @ManyToOne

@@ -1,66 +1,73 @@
 package org.example.patronarquitecturabackend.controller;
 
-import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import org.example.patronarquitecturabackend.entity.User;
-import org.example.patronarquitecturabackend.service.UserService;
+
+import org.example.patronarquitecturabackend.entity.UserEntity;
+import org.example.patronarquitecturabackend.entity.UserLogin;
+import org.example.patronarquitecturabackend.service.JwtService;
+import org.example.patronarquitecturabackend.service.UserEntityDetailService;
+import org.example.patronarquitecturabackend.service.UserEntityService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
+@CrossOrigin("*")
 @RestController
-@AllArgsConstructor
-@RequestMapping("/api/v1/users")
+@RequestMapping("api/v1/users")
 public class UserRestController {
 
-    private final UserService userService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private UserEntityDetailService userEntityDetailService;
+
+    @Autowired
+    private UserEntityService userEntityService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @PostMapping("/registerUser")
+    public ResponseEntity<UserEntity> registerUser(@RequestBody UserEntity user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        UserEntity newUser = userEntityService.save(user);
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/loginUser")
+    public String loginAndGetToken(@RequestBody UserLogin userLogin) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                userLogin.username(), userLogin.password()
+        ));
+        if (authentication.isAuthenticated()) {
+            return jwtService.generateToken(userEntityDetailService.loadUserByUsername(userLogin.username()));
+        }else{
+            throw new UsernameNotFoundException("Invalid username or password");
+        }
+    }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserEntity>> getAllUsers() {
+        List<UserEntity> users = userEntityService.findAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable("userId") Long userId) {
-        User user = userService.getUserById(userId).orElse(null);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<UserEntity> getUserById(@PathVariable Integer userId) {
+        Optional<UserEntity> user = userEntityService.findById(userId);
+        return new ResponseEntity<>(user.orElse(null), HttpStatus.OK);
     }
-    /*
-    @GetMapping("/email/{userEmail}/{userpassword}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable("userEmail") String userEmail, @PathVariable String userpassword) {
-        User user = userService.getUserByEmail(userEmail, userpassword);
-        if (user == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else{
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-    }
-    */
-/*
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User loginRequest) {
-        boolean isValid = userService.validateUser(loginRequest.getEmail(), loginRequest.getPassword());
-        if (isValid) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-    }
- */
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody @Valid User user) {
-        User newUser = userService.createUser(user);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-    }
-
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable("userId") Long userId) {
-        userService.deleteUser(userId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
 
 }

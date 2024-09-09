@@ -1,7 +1,7 @@
 package org.example.patronarquitecturabackend.service;
 
 import lombok.AllArgsConstructor;
-import org.example.patronarquitecturabackend.entity.User;
+import org.example.patronarquitecturabackend.entity.UserEntity;
 import org.example.patronarquitecturabackend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserEntityServiceImpl implements UserEntityService {
 
     private final UserRepository userRepository;
 
@@ -18,32 +18,26 @@ public class UserServiceImpl implements UserService {
      * @param user
      * @return
      */
-
-    public User createUser(User user) {return userRepository.save(user);
-
+    @Override
+    public UserEntity save(UserEntity user) {
+        return userRepository.save(user);
     }
 
     /**
      * @param userId
      * @return
      */
-    public Optional<User> getUserById(Long userId) {
+    @Override
+    public Optional<UserEntity> findById(Integer userId) {
         return userRepository.findById(userId);
     }
 
     /**
      * @return
      */
-    public List<User> getAllUsers() {
+    @Override
+    public List<UserEntity> findAll() {
         return userRepository.findAll();
     }
-
-    /**
-     * @param userId
-     */
-    public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
-    }
-
 
 }

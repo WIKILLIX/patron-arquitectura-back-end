@@ -2,6 +2,7 @@ package org.example.patronarquitecturabackend.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.example.patronarquitecturabackend.entity.Brand;
 import org.example.patronarquitecturabackend.entity.Product;
 import org.example.patronarquitecturabackend.service.ProductService;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/products")
@@ -20,6 +22,12 @@ public class ProductRestController {
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @PostMapping("/productsByBrand")
+    public ResponseEntity<List<Product>> getProductByBrand(@RequestBody Brand brand) {
+        List<Product> products = productService.getProductByBrand(brand);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 

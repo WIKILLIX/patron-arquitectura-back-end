@@ -1,7 +1,11 @@
 package org.example.patronarquitecturabackend.repository;
 
-import org.example.patronarquitecturabackend.entity.User;
+import org.example.patronarquitecturabackend.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<UserEntity, Integer> {
+
+    Optional<UserEntity> findByUsername(String username);
 }
