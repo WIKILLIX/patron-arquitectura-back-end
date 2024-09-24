@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests -> {
+                    authorizeRequests.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll();
                     authorizeRequests.requestMatchers("/api/v1/users/loginUser", "/api/v1/users/registerUser").permitAll();
                     authorizeRequests.requestMatchers(HttpMethod.OPTIONS,"/**").permitAll();
                     authorizeRequests.requestMatchers("api/v1/**").hasRole("ADMIN");
